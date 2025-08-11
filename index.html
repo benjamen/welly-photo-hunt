@@ -3,55 +3,33 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wellington Evil‑Mode Photo Hunt (20)</title>
+  <title>Wellington Evil‑Mode Photo Hunt — 20 Landmarks</title>
   <style>
     html, body { height: 100%; }
-    body {
-      margin: 0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      background: #0b0f14;
-      color: #e6edf3;
-    }
+    body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans";
+            background: #0b0f14; color: #e6edf3; }
     a { color: #8ab4f8; text-decoration: none; }
     a:hover { text-decoration: underline; }
-
     .wrap { min-height: 100%; display: grid; grid-template-rows: auto 1fr auto; }
-    header {
-      padding: 16px 20px; display: flex; gap: 12px; align-items: center; justify-content: space-between;
-      background: linear-gradient(180deg, #0f1622 0%, #0b0f14 100%); border-bottom: 1px solid #1f2a36; position: sticky; top: 0; z-index: 10;
-    }
-    .title { font-size: clamp(18px, 2.2vw, 24px); font-weight: 700; letter-spacing: 0.3px; }
-    .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-    .btn {
-      background: #1b2531; border: 1px solid #2b3a4b; color: #e6edf3; padding: 10px 14px; border-radius: 14px; font-weight: 600; letter-spacing: .2px;
-      cursor: pointer; transition: transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
-    }
-    .btn:hover { background: #233142; border-color: #3a4d63; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
-    .btn:active { transform: translateY(1px) scale(.99); }
-    .btn.primary { background: #2563eb; border-color: #1e4fd6; }
-    .btn.primary:hover { background: #2b6af0; border-color: #2250c7; }
-
-    .game { max-width: 1050px; margin: 28px auto; padding: 0 20px 28px; display: grid; gap: 18px; }
-    .card { background: radial-gradient(1200px 600px at 50% -10%, rgba(62,104,155,.18), transparent 60%), #0d141c; border: 1px solid #182330; border-radius: 20px; overflow: hidden; box-shadow: inset 0 1px 0 rgba(255,255,255,.02), 0 12px 48px rgba(0,0,0,.35); }
-    .stage { display: grid; grid-template-columns: 1fr; gap: 0; }
-    .imageFrame { height: clamp(260px, 48vh, 520px); background: #0f1722; display: grid; place-items: center; overflow: hidden; position: relative; }
-    .cropBox {
-      width: min(88%, 820px); height: min(86%, 480px);
-      border-radius: 18px; overflow: hidden; position: relative;
-      border: 1px solid rgba(255,255,255,.06);
-      box-shadow: 0 12px 32px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.03);
-      background-position: center; background-repeat: no-repeat; background-size: cover;
-      will-change: transform;
-    }
-    .mask { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(60% 70% at 50% 50%, rgba(0,0,0,.12), rgba(0,0,0,.42)); }
-    .hud { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 20px; border-top: 1px solid #182330; background: #0b0f14; flex-wrap: wrap; }
-    .clue { font-size: clamp(14px, 1.7vw, 18px); opacity: .94; }
-    .meta { display: flex; align-items: center; gap: 10px; font-size: 14px; opacity: .8; }
-    .pill { padding: 6px 10px; border-radius: 999px; background: #14202c; border: 1px solid #223142; }
-    .answer { padding: 14px 18px; margin: 0 20px 18px; border-radius: 14px; background: #0e1722; border: 1px dashed #29415c; display: none; line-height: 1.45; font-size: 15px; }
-    .answer b { color: #eaf2ff; }
-    footer { opacity: .7; font-size: 12px; padding: 14px 20px; text-align: center; border-top: 1px solid #182330; }
-    .small { font-size: 12px; opacity: .78; }
+    header { padding: 16px 20px; display:flex; gap:12px; align-items:center; justify-content:space-between;
+              background: linear-gradient(180deg,#0f1622 0%,#0b0f14 100%); border-bottom: 1px solid #1f2a36; position: sticky; top:0; z-index:10; }
+    .title { font-size: clamp(18px,2.2vw,24px); font-weight: 700; letter-spacing: .3px; }
+    .controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .btn { background:#1b2531; border:1px solid #2b3a4b; color:#e6edf3; padding:10px 14px; border-radius:14px; font-weight:600; cursor:pointer; }
+    .btn:hover { background:#233142; border-color:#3a4d63; }
+    .btn.primary { background:#2563eb; border-color:#1e4fd6; }
+    .btn.primary:hover { background:#2b6af0; border-color:#2250c7; }
+    .game { max-width:1050px; margin:28px auto; padding:0 20px 28px; display:grid; gap:18px; }
+    .card { background: radial-gradient(1200px 600px at 50% -10%, rgba(62,104,155,.18), transparent 60%), #0d141c;
+             border:1px solid #182330; border-radius:20px; overflow:hidden; }
+    .imageFrame { height: clamp(260px,48vh,520px); background:#0f1722; display:grid; place-items:center; overflow:hidden; position:relative; }
+    .cropBox { width:min(88%,820px); height:min(86%,480px); border-radius:18px; overflow:hidden; background-position:center; background-repeat:no-repeat; background-size:cover; border:1px solid rgba(255,255,255,.06);}
+    .mask { position:absolute; inset:0; pointer-events:none; background: radial-gradient(60% 70% at 50% 50%, rgba(0,0,0,.12), rgba(0,0,0,.42)); }
+    .hud { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-top:1px solid #182330; background:#0b0f14; flex-wrap:wrap; }
+    .pill { padding:6px 10px; border-radius:999px; background:#14202c; border:1px solid #223142; font-size:14px; opacity:.85; }
+    .clue { font-size: clamp(14px,1.7vw,18px); }
+    .answer { padding:14px 18px; margin:0 20px 18px; border-radius:14px; background:#0e1722; border:1px dashed #29415c; display:none; line-height:1.45; font-size:15px; }
+    footer { opacity:.7; font-size:12px; padding:14px 20px; text-align:center; border-top:1px solid #182330; }
   </style>
 </head>
 <body>
@@ -59,21 +37,21 @@
     <header>
       <div class="title">🧩 Wellington Evil‑Mode Photo Hunt — 20 Landmarks</div>
       <div class="controls">
-        <button class="btn" id="revealBtn" title="Reveal the answer">Reveal</button>
-        <button class="btn" id="nextBtn" title="Next image">Next</button>
-        <button class="btn primary" id="shuffleBtn" title="Shuffle & restart">Restart</button>
+        <button class="btn" id="revealBtn">Reveal</button>
+        <button class="btn" id="nextBtn">Next</button>
+        <button class="btn primary" id="shuffleBtn">Restart</button>
       </div>
     </header>
 
     <main class="game">
-      <section class="card stage">
+      <section class="card">
         <div class="imageFrame">
           <div id="crop" class="cropBox" role="img" aria-label="Cropped Wellington landmark"></div>
           <div class="mask"></div>
         </div>
         <div class="hud">
           <div class="clue" id="clue">—</div>
-          <div class="meta">
+          <div>
             <span class="pill" id="progress">0 / 0</span>
             <span class="pill" id="score">Score: 0</span>
           </div>
@@ -83,67 +61,21 @@
 
       <section class="card" style="padding:14px 18px;">
         <details>
-          <summary>How to play (and make it even harder)</summary>
+          <summary>How to play</summary>
           <ul>
             <li>Guess the location from the extreme crop + clue.</li>
-            <li>Click <b>Reveal</b> to see the answer and a credit link. +1 point if you guessed correctly.</li>
-            <li>Click <b>Next</b> to move on. <b>Restart</b> shuffles the deck.</li>
-            <li>Harder: hide clues (<kbd>H</kbd>), and increase <i>zoom</i> in <code>items[]</code>.</li>
+            <li><b>Reveal</b> shows the answer and credit. +1 if you guessed right.</li>
+            <li><b>Next</b> moves on. <b>Restart</b> shuffles the order.</li>
+            <li>Harder: press <kbd>H</kbd> to hide clues; tweak <code>zoom</code>/<code>focusX</code>/<code>focusY</code> per item.</li>
           </ul>
         </details>
-        <p class="small">Note: Images hot‑linked from Wikimedia Commons using <code>Special:FilePath</code> and cropped live via CSS.</p>
       </section>
     </main>
-
-    <footer>Built for your Wellington work meeting. Host this file on GitHub Pages and go.</footer>
+    <footer>Made for your Wellington meeting. You can replace any image in <code>/img</code> and tune crops live.</footer>
   </div>
 
   <script>
-    const items = [
-      // City Icons – Abstracted
-      { id:'beehive-roof', clue:"This hive doesn’t hum, but it rules.", answer:"The Beehive (Parliament’s Executive Wing) — roof seam detail", credit:"GeeCee75 — CC BY-SA (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Parliament%20Building%2C%20Wellington%2C%20New%20Zealand%20(The%20Beehive).JPG", focusX:52, focusY:18, zoom:320 },
-
-      { id:'cablecar-gear', clue:"Without this bite, the ride won’t climb.", answer:"Wellington Cable Car — track/mechanism detail", credit:"Wellington Cable Car category — CC (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Wellington%20Cable%20Car%20and%20motorway.jpg", focusX:48, focusY:62, zoom:330 },
-
-      { id:'bucket-fountain-drip', clue:"Some say it’s art; others call it a splash hazard.", answer:"Bucket Fountain — Cuba Mall", credit:"Brenda Wallace — Public Domain (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/The%20Bucket%20Fountain%2C%20Wellington.jpg", focusX:41, focusY:62, zoom:340 },
-
-      { id:'tepapa-edge', clue:"A giant squid guards these walls.", answer:"Te Papa Tongarewa — exterior detail", credit:"Te Papa — CC BY (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Exterior%20view%20of%20Te%20Papa.jpg", focusX:60, focusY:38, zoom:300 },
-
-      { id:'carter-nozzle', clue:"Sprays when the wind says.", answer:"Carter Fountain — Oriental Bay", credit:"russellstreet — CC BY-SA 2.0 (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Carter%20Fountain%20in%20Oriental%20Bay.jpg", focusX:62, focusY:44, zoom:360 },
-
-      // Culture & Architecture
-      { id:'mfc-ceiling', clue:"The ceiling sings here too.", answer:"Michael Fowler Centre — interior/ceiling", credit:"Lisa Maule — CC BY-SA 4.0 (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/MFC%20WGTN%2013.jpg", focusX:54, focusY:22, zoom:360 },
-
-      { id:'city-to-sea-wood', clue:"Between civic and sea, art marks the way.", answer:"City to Sea Bridge — carved timber detail", credit:"Stuartyeates — CC BY-SA (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/City%20to%20Sea%20Bridge%20with%20Michael%20Fowler%20Centre%20and%20Wellington%20Town%20Hall%20in%20background.jpg", focusX:34, focusY:68, zoom:380 },
-
-      { id:'embassy-curtain', clue:"From premieres to popcorn, this curtain’s seen it all.", answer:"Embassy Theatre — interior fabric detail (representative)", credit:"Use exterior/foyer crop if needed — CC (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/City%20to%20Sea%20Bridge.jpg", focusX:10, focusY:30, zoom:420 },
-
-      { id:'civic-tile', clue:"Step lightly; the council’s watching.", answer:"Civic Square — tile/paving detail", credit:"Brett Taylor — CC BY (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Civic%20Square%2C%20Wellington.jpg", focusX:62, focusY:64, zoom:420 },
-
-      { id:'parliament-library-latch', clue:"Opens windows to history.", answer:"Parliamentary Library — window/ornament detail", credit:"Various — CC BY-SA (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Parliamentary%20Library%20Building%20Wellington.jpg", focusX:58, focusY:30, zoom:360 },
-
-      // Nature & Outdoors
-      { id:'mtvic-scope', clue:"View it all in a single turn.", answer:"Mount Victoria Lookout — telescope/railing detail", credit:"Flickr via Commons — CC BY-SA 2.0", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Mount%20Victoria%20Lookout%20(21978445212).jpg", focusX:52, focusY:35, zoom:360 },
-
-      { id:'zealandia-mesh', clue:"No possum shall pass.", answer:"ZEALANDIA — predator‑proof fence", credit:"L Maule — CC BY-SA 4.0 (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Zealandia%20fence.jpg", focusX:62, focusY:40, zoom:380 },
-
-      { id:'rose-thorn', clue:"This garden blooms above the city.", answer:"Wellington Botanic Garden — Lady Norwood Rose Garden", credit:"CC BY-SA 4.0 (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Wellington%20Botanic%20Garden%20-%20Lady%20Norwood%20Rose%20Garden.jpg", focusX:58, focusY:44, zoom:420 },
-
-      { id:'oriental-bolt', clue:"Swim, sun, or stroll — all start here.", answer:"Oriental Bay — pier/wharf detail", credit:"russellstreet — CC BY-SA 2.0 (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Oriental%20Bay%2C%20Wellington%20NZ.jpg", focusX:52, focusY:56, zoom:420 },
-
-      { id:'waterfront-weld', clue:"This creature’s tail points to the harbour.", answer:"‘Tripod’ sculpture weld (Wētā Workshop) — Courtenay Place", credit:"Andre Goble — CC BY 2.0 (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Tripod%20sculpture%20Courtenay%20Place.jpg", focusX:62, focusY:38, zoom:400 },
-
-      // Hidden & Quirky
-      { id:'cuba-manhole', clue:"Underneath lies a story in pipes.", answer:"Decorative manhole cover — Cuba precinct", credit:"Sarang — Public Domain (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Manhole%20cover%20WLG.jpg", focusX:50, focusY:50, zoom:360 },
-
-      { id:'somes-lighthouse-step', clue:"Guiding the way for over a century.", answer:"Matiu/Somes Island — lighthouse detail", credit:"Matt Lamont — CC BY-SA (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Somes%20Island%20Lighthouse.jpg", focusX:58, focusY:42, zoom:360 },
-
-      { id:'kelburn-rivets', clue:"Cars pass; cables cross.", answer:"Kelburn Viaduct — rivet/steel detail", credit:"Kelburn Viaduct files — CC (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Kelburn%20Viaduct.jpg", focusX:46, focusY:62, zoom:400 },
-
-      { id:'weta-troll', clue:"Watch your step — or he’ll step on you.", answer:"Wētā Cave — Stone Trolls", credit:"Kigsz — CC BY-SA 4.0 (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/Tom%2C%20Bert%2C%20and%20William%20(2).jpg", focusX:37, focusY:78, zoom:420 },
-
-      { id:'brooklyn-bolts', clue:"Turning since 1993; still the city’s tallest spinner.", answer:"Brooklyn Wind Turbine — base/bolt ring", credit:"Nition1 — CC BY-SA (Wikimedia Commons)", url:"https://commons.wikimedia.org/wiki/Special:FilePath/BrooklynWindTurbine.jpg", focusX:54, focusY:70, zoom:440 }
-    ];
+    const items = [{"id": "te-papa", "clue": "Inside these walls, a colossal squid lurks.", "answer": "Te Papa Tongarewa – main entrance & drum facade", "credit": "Provided image (meeting pack)", "url": "img/te-papa.jpg", "focusX": 35, "focusY": 45, "zoom": 250}, {"id": "bucket-fountain", "clue": "Built in 1969, notorious for splash damage and bubble baths.", "answer": "Bucket Fountain — Cuba Street", "credit": "Provided image (meeting pack)", "url": "img/bucket-fountain.jpg", "focusX": 50, "focusY": 60, "zoom": 280}, {"id": "boatsheds", "clue": "Blue-and-white doors reflected in still water.", "answer": "Oriental Bay Boatsheds", "credit": "Provided image (meeting pack)", "url": "img/oriental-bay-boatsheds.jpg", "focusX": 30, "focusY": 60, "zoom": 230}, {"id": "kelburn-viaduct", "clue": "Cars pass above; this plaque names the crossing.", "answer": "Kelburn Viaduct — foundation plaque", "credit": "Provided image (meeting pack)", "url": "img/kelburn-viaduct-plaque.jpg", "focusX": 50, "focusY": 60, "zoom": 230}, {"id": "mfc-interior", "clue": "The ceiling sings here too.", "answer": "Michael Fowler Centre — timber ceiling & foyer", "credit": "Provided image (meeting pack)", "url": "img/mfc-interior.jpg", "focusX": 35, "focusY": 25, "zoom": 280}, {"id": "mtvic-cone", "clue": "At this lookout, a mirrored cone points to the harbour.", "answer": "Mount Victoria Lookout — mirrored cone sculpture", "credit": "Provided image (meeting pack)", "url": "img/mt-victoria-cone-unknown.jpg", "focusX": 50, "focusY": 45, "zoom": 260}, {"id": "mtvic-tunnel", "clue": "Beep for ghosts as you pass through this hillside.", "answer": "Mount Victoria Tunnel entrance", "credit": "Provided image (meeting pack)", "url": "img/mount-victoria-tunnel.jpg", "focusX": 50, "focusY": 55, "zoom": 260}, {"id": "welly-museum", "clue": "A periscope-yellow vent guards this harbourfront museum.", "answer": "Wellington Museum (Queen’s Wharf / Bond Store)", "credit": "Provided image (meeting pack)", "url": "img/wellington-museum-yellow-vent.jpg", "focusX": 33, "focusY": 70, "zoom": 270}, {"id": "oriental-bay", "clue": "Sandy curve, Nor’Wester, and a fountain that sprays when the wind says.", "answer": "Oriental Bay with Carter Fountain", "credit": "Provided image (meeting pack)", "url": "img/oriental-bay-carter-fountain.jpg", "focusX": 25, "focusY": 45, "zoom": 240}, {"id": "roxy", "clue": "Neon art deco letters glow over Miramar nights.", "answer": "Roxy Cinema — Miramar", "credit": "Provided image (meeting pack)", "url": "img/roxy-cinema.jpg", "focusX": 50, "focusY": 22, "zoom": 270}, {"id": "city-to-sea", "clue": "Between civic and sea, carved timber guides your steps.", "answer": "City to Sea Bridge", "credit": "Provided image (meeting pack)", "url": "img/city-to-sea-bridge.jpg", "focusX": 60, "focusY": 55, "zoom": 260}, {"id": "matu-somes", "clue": "An island sanctuary with a lighthouse and plenty of wind.", "answer": "Matiu/Somes Island — lighthouse & coastline", "credit": "Provided image (meeting pack)", "url": "img/matu-somes-lighthouse-coast.jpg", "focusX": 80, "focusY": 45, "zoom": 240}, {"id": "cable-car", "clue": "A 5‑minute climb that’s been running since 1902.", "answer": "Wellington Cable Car (Kelburn view)", "credit": "Provided image (meeting pack)", "url": "img/wellington-cable-car-view.jpg", "focusX": 75, "focusY": 70, "zoom": 260}, {"id": "weta-door", "clue": "A troll guards a very round yellow door.", "answer": "Wētā Cave / Hobbit door & troll, Miramar", "credit": "Provided image (meeting pack)", "url": "img/weta-cave-hobbit-door-troll.jpg", "focusX": 65, "focusY": 70, "zoom": 270}, {"id": "windy-welly-sign", "clue": "This hillside wordmark gets literally blown away.", "answer": "‘Wellington’ Windy sign at Miramar Cutting", "credit": "Provided image (meeting pack)", "url": "img/windy-wellington-sign-miramar.jpg", "focusX": 70, "focusY": 55, "zoom": 270}, {"id": "big-letters-waterfront", "clue": "These bold yellow letters love selfies on the waterfront.", "answer": "‘WELLINGTON’ letters — Taranaki St Wharf", "credit": "Provided image (meeting pack)", "url": "img/wellington-waterfront-big-letters.jpg", "focusX": 38, "focusY": 60, "zoom": 260}, {"id": "golden-bird", "clue": "Suspended feathers of light — airport or venue install? (please confirm).", "answer": "[Confirm] Golden bird sculpture — is this at TSB Arena or Wellington Airport?", "credit": "Provided image (meeting pack)", "url": "img/unknown-golden-bird-sculpture.jpg", "focusX": 55, "focusY": 35, "zoom": 260}, {"id": "quadriga", "clue": "Four horses lead the charge — but which Wellington landmark is this on?", "answer": "[Confirm] Quadriga sculpture — please confirm location/name", "credit": "Provided image (meeting pack)", "url": "img/unknown-quadriga-horses.jpg", "focusX": 50, "focusY": 40, "zoom": 300}, {"id": "gothic-building", "clue": "Gothic arches and roses — Island Bay comes to mind.", "answer": "[Confirm] Erskine College (former Sacred Heart), Island Bay — please confirm", "credit": "Provided image (meeting pack)", "url": "img/old-government-building-or-erskine.jpg", "focusX": 55, "focusY": 50, "zoom": 250}, {"id": "valve-tower", "clue": "A red spire watches over a predator‑proof valley lake.", "answer": "[Confirm] Zealandia (Karori) — Gothic valve tower on the lower dam", "credit": "Provided image (meeting pack)", "url": "img/zealandia-valve-tower.jpg", "focusX": 65, "focusY": 45, "zoom": 260}];
 
     let deck = [];
     let index = 0;
@@ -154,61 +86,31 @@
     const progress = document.getElementById('progress');
     const scoreEl = document.getElementById('score');
 
-    function shuffle(array) {
-      const a = array.slice();
-      for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-      }
-      return a;
-    }
-
-    function setCrop(it) {
-      crop.style.backgroundImage = `url('${it.url}')`;
-      crop.style.backgroundPosition = `${it.focusX}% ${it.focusY}%`;
-      crop.style.backgroundSize = `${it.zoom}% auto`;
-    }
-
+    function shuffle(array) { const a = array.slice(); for (let i=a.length-1;i>0;i--) { const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+    function setCrop(it) { crop.style.backgroundImage = `url('${it.url}')`; crop.style.backgroundPosition = `${it.focusX}% ${it.focusY}%`; crop.style.backgroundSize = `${it.zoom}% auto`; }
     function show(i) {
       const it = deck[i];
       setCrop(it);
       clue.textContent = it.clue;
       ans.style.display = 'none';
-      ans.innerHTML = `<b>Answer:</b> ${it.answer}<br><span class="small">${it.credit} · <a href="${it.url}" target="_blank" rel="noopener">Open source image</a></span>`;
-      progress.textContent = `${i + 1} / ${deck.length}`;
+      ans.innerHTML = `<b>Answer:</b> ${it.answer}<br><span style="opacity:.8;font-size:12px;">${it.credit}</span>`;
+      progress.textContent = `${i+1} / ${deck.length}`;
       scoreEl.textContent = `Score: ${score}`;
     }
-
-    function next() {
-      if (index < deck.length - 1) {
-        index++; show(index);
-      } else {
-        clue.textContent = "Done! Hit Restart to shuffle again.";
-      }
-    }
-
-    function reveal() {
-      ans.style.display = ans.style.display === 'none' ? 'block' : 'none';
-    }
-
-    function restart() {
-      deck = shuffle(items);
-      index = 0; score = 0; show(index);
-    }
+    function next() { if (index < deck.length - 1) { index++; show(index); } else { clue.textContent = "Done! Hit Restart to shuffle again."; } }
+    function reveal() { ans.style.display = ans.style.display === 'none' ? 'block' : 'none'; }
+    function restart() { deck = shuffle(items); index = 0; score = 0; show(index); }
 
     document.addEventListener('keydown', (e) => {
-      if (e.key.toLowerCase() === 'n') next();
-      if (e.key.toLowerCase() === 'r') restart();
-      if (e.key.toLowerCase() === 'h') {
-        clue.style.visibility = clue.style.visibility !== 'hidden' ? 'hidden' : 'visible';
-      }
-      if (e.key.toLowerCase() === 's') { score++; scoreEl.textContent = `Score: ${score}`; }
+      const k = e.key.toLowerCase();
+      if (k === 'n') next();
+      if (k === 'r') restart();
+      if (k === 'h') clue.style.visibility = clue.style.visibility !== 'hidden' ? 'hidden' : 'visible';
+      if (k === 's') { score++; scoreEl.textContent = `Score: ${score}`; }
     });
-
     document.getElementById('nextBtn').addEventListener('click', next);
     document.getElementById('revealBtn').addEventListener('click', reveal);
     document.getElementById('shuffleBtn').addEventListener('click', restart);
-
     restart();
   </script>
 </body>
