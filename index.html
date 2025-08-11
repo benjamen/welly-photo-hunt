@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wellington Hard‑Mode Photo Hunt</title>
+  <style>
+    /* --- Reset / Base --- */
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      background: #0b0f14;
+      color: #e6edf3;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a { color: #8ab4f8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* --- Layout --- */
+    .wrap {
+      min-height: 100%;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+    header {
+      padding: 16px 20px;
+      display: flex; gap: 12px; align-items: center; justify-content: space-between;
+      background: linear-gradient(180deg, #0f1622 0%, #0b0f14 100%);
+      border-bottom: 1px solid #1f2a36;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .title { font-size: clamp(18px, 2.2vw, 24px); font-weight: 700; letter-spacing: 0.3px; }
+    .controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    .btn {
+      background: #1b2531;
+      border: 1px solid #2b3a4b;
+      color: #e6edf3;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-weight: 600; letter-spacing: .2px;
+      cursor: pointer;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover { background: #233142; border-color: #3a4d63; box-shadow: 0 6px 18px rgba(0,0,0,.25); }
+    .btn:active { transform: translateY(1px) scale(.99); }
+    .btn.primary { background: #2563eb; border-color: #1e4fd6; }
+    .btn.primary:hover { background: #2b6af0; border-color: #2250c7; }
+
+    .game {
+      max-width: 1050px; margin: 28px auto; padding: 0 20px 28px;
+      display: grid; gap: 18px;
+    }
+
+    .card {
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(62,104,155,.18), transparent 60%), #0d141c;
+      border: 1px solid #182330;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.02), 0 12px 48px rgba(0,0,0,.35);
+    }
+
+    .stage {
+      display: grid; grid-template-columns: 1fr; gap: 0;
+    }
+
+    .imageFrame {
+      height: clamp(260px, 48vh, 520px);
+      background: #0f1722;
+      display: grid; place-items: center;
+      overflow: hidden; position: relative;
+    }
+    .cropBox {
+      width: min(88%, 820px); height: min(86%, 480px);
+      border-radius: 18px; overflow: hidden; position: relative;
+      border: 1px solid rgba(255,255,255,.06);
+      box-shadow: 0 12px 32px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,.03);
+      background-position: center; background-repeat: no-repeat; background-size: cover;
+      will-change: transform;
+    }
+    .mask { /* subtle dark vignette */
+      position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(60% 70% at 50% 50%, rgba(0,0,0,.12), rgba(0,0,0,.42));
+    }
+
+    .hud {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 16px 20px; border-top: 1px solid #182330; background: #0b0f14;
+      flex-wrap: wrap;
+    }
+    .clue { font-size: clamp(14px, 1.7vw, 18px); opacity: .94; }
+    .meta { display: flex; align-items: center; gap: 10px; font-size: 14px; opacity: .8; }
+    .pill { padding: 6px 10px; border-radius: 999px; background: #14202c; border: 1px solid #223142; }
+
+    .answer {
+      padding: 14px 18px; margin: 0 20px 18px; border-radius: 14px;
+      background: #0e1722; border: 1px dashed #29415c; display: none;
+      line-height: 1.45; font-size: 15px;
+    }
+    .answer b { color: #eaf2ff; }
+
+    footer { opacity: .7; font-size: 12px; padding: 14px 20px; text-align: center; border-top: 1px solid #182330; }
+
+    .small { font-size: 12px; opacity: .78; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">🧩 Wellington Hard‑Mode Photo Hunt</div>
+      <div class="controls">
+        <button class="btn" id="revealBtn" title="Reveal the answer">Reveal</button>
+        <button class="btn" id="nextBtn" title="Next image">Next</button>
+        <button class="btn primary" id="shuffleBtn" title="Shuffle & restart">Restart</button>
+      </div>
+    </header>
+
+    <main class="game">
+      <section class="card stage">
+        <div class="imageFrame">
+          <div id="crop" class="cropBox" role="img" aria-label="Cropped Wellington landmark"></div>
+          <div class="mask"></div>
+        </div>
+        <div class="hud">
+          <div class="clue" id="clue">—</div>
+          <div class="meta">
+            <span class="pill" id="progress">0 / 0</span>
+            <span class="pill" id="score">Score: 0</span>
+          </div>
+        </div>
+        <div class="answer" id="answer"></div>
+      </section>
+
+      <section class="card" style="padding:14px 18px;">
+        <details>
+          <summary>How to play (and make it harder)</summary>
+          <ul>
+            <li>Guess the location from the extreme crop + clue.</li>
+            <li>Click <b>Reveal</b> to see the answer and a credit link. +1 point if you guessed correctly.</li>
+            <li>Click <b>Next</b> to move on. <b>Restart</b> shuffles the deck.</li>
+            <li>Harder mode: hide clues (press <kbd>H</kbd>), set <i>zoom</i> higher in <code>items[]</code>.</li>
+          </ul>
+        </details>
+        <p class="small">Tip: This app crops live using CSS background‑position and size, so you can tune each item with <code>focusX</code>, <code>focusY</code>, and <code>zoom</code> without editing images.</p>
+      </section>
+    </main>
+
+    <footer>
+      Built for a fast team game at work. Host this file on GitHub Pages and you’re done.
+    </footer>
+  </div>
+
+  <script>
+    // --- Data ---
+    // Use Commons "Special:FilePath" so we can hotlink originals safely.
+    const items = [
+      {
+        id: 'beehive-roof',
+        clue: "This landmark’s ‘honeycomb’ has been buzzing since the late 1970s.",
+        answer: "The Beehive (Parliament’s Executive Wing)",
+        credit: "Photo: ProtoKiwi – CC BY-SA 4.0 (Wikimedia Commons)",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Wellington%20Beehive%20from%20Below.jpg",
+        focusX: 52, focusY: 18, zoom: 260
+      },
+      {
+        id: 'cablecar-track',
+        clue: "This mechanism pulls thousands uphill each year — without it, you’d be hoofing it.",
+        answer: "Wellington Cable Car (track & cable mechanism)",
+        credit: "Photo: Ppe42 – CC BY-SA 3.0 (Wikimedia Commons)",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Welliingtoncablecar.jpg",
+        focusX: 53, focusY: 56, zoom: 240
+      },
+      {
+        id: 'bucket-fountain-bolt',
+        clue: "Built in 1969; notorious for splash damage and the occasional bubble bath.",
+        answer: "Bucket Fountain, Cuba Street",
+        credit: "Photo: Christian Mehlführer – CC BY-SA 4.0 (Wikimedia Commons)",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/The%20Bucket%20Fountain%2C%20Wellington.jpg",
+        focusX: 41, focusY: 62, zoom: 260
+      },
+      {
+        id: 'te-papa-facade',
+        clue: "Inside these walls, a colossal squid lurks.",
+        answer: "Te Papa Tongarewa – exterior detail",
+        credit: "Photo: Schwede66 – CC BY-SA 4.0 (Wikimedia Commons)",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Te%20Papa%27s%20plinth%20and%20building%20exterior.jpg",
+        focusX: 60, focusY: 38, zoom: 220
+      },
+      {
+        id: 'carter-fountain-light',
+        clue: "Harbour spray warning: dress accordingly when the wind’s up.",
+        answer: "Carter Fountain, Oriental Bay",
+        credit: "Photo: Andrew Turner (Flickr) via Commons – CC BY-SA 2.0",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Carter%20Fountain%20in%20Oriental%20Bay.jpg",
+        focusX: 65, focusY: 40, zoom: 250
+      },
+      {
+        id: 'mfc-ceiling',
+        clue: "Orchestras love this place — but look up to see the geometry.",
+        answer: "Michael Fowler Centre",
+        credit: "Photo: L Maule – CC BY-SA 4.0 (Wikimedia Commons)",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Michael%20Fowler%20Centre.jpg",
+        focusX: 54, focusY: 22, zoom: 260
+      },
+      {
+        id: 'mtvic-scope',
+        clue: "From here you can watch ferries, flights, and flocks — all in one spin.",
+        answer: "Mount Victoria Lookout",
+        credit: "Photo: Bernard Spragg – CC BY-SA 2.0 (Wikimedia Commons)",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Mount%20Victoria%20Lookout%20(21978445212).jpg",
+        focusX: 52, focusY: 35, zoom: 250
+      },
+      {
+        id: 'cuba-st-manhole',
+        clue: "Under your feet in this bohemian street, the city’s history flows.",
+        answer: "Decorative manhole cover (Wellington City / Cuba precinct)",
+        credit: "Photo: PD‑self – Wikimedia Commons",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Manhole%20cover%20WLG.jpg",
+        focusX: 50, focusY: 50, zoom: 220
+      },
+      {
+        id: 'zealandia-mesh',
+        clue: "This mesh keeps the outside world out — and ancient Aotearoa inside.",
+        answer: "ZEALANDIA predator‑proof fence",
+        credit: "Photo: L Maule – CC BY-SA 4.0 (Wikimedia Commons)",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Zealandia%20fence.jpg",
+        focusX: 62, focusY: 40, zoom: 270
+      },
+      {
+        id: 'weta-troll-toe',
+        clue: "This character doesn’t mind visitors staring at his feet.",
+        answer: "Wētā Cave / Wētā Workshop troll statue",
+        credit: "Photo: Carlos Pacheco – CC BY 2.0 (Wikimedia Commons)",
+        url: "https://commons.wikimedia.org/wiki/Special:FilePath/Weta%20Workshop%20troll%20(52381362590).jpg",
+        focusX: 37, focusY: 78, zoom: 330
+      }
+    ];
+
+    // --- State ---
+    let deck = [];
+    let index = 0;
+    let score = 0;
+    const crop = document.getElementById('crop');
+    const clue = document.getElementById('clue');
+    const ans = document.getElementById('answer');
+    const progress = document.getElementById('progress');
+    const scoreEl = document.getElementById('score');
+
+    function shuffle(array) {
+      const a = array.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function setCrop(it) {
+      // Crop using background-position (% of image) and background-size (zoom %)
+      crop.style.backgroundImage = `url('${it.url}')`;
+      crop.style.backgroundPosition = `${it.focusX}% ${it.focusY}%`;
+      crop.style.backgroundSize = `${it.zoom}% auto`;
+    }
+
+    function show(i) {
+      const it = deck[i];
+      setCrop(it);
+      clue.textContent = it.clue;
+      ans.style.display = 'none';
+      ans.innerHTML = `
+        <b>Answer:</b> ${it.answer}<br>
+        <span class="small">${it.credit} · <a href="${it.url}" target="_blank" rel="noopener">Open source image</a></span>
+      `;
+      progress.textContent = `${i + 1} / ${deck.length}`;
+      scoreEl.textContent = `Score: ${score}`;
+    }
+
+    function next() {
+      if (index < deck.length - 1) {
+        index++;
+        show(index);
+      } else {
+        clue.textContent = "Done! Hit Restart to shuffle again.";
+      }
+    }
+
+    function reveal() {
+      if (ans.style.display === 'none') {
+        ans.style.display = 'block';
+      } else {
+        ans.style.display = 'none';
+      }
+    }
+
+    function restart() {
+      deck = shuffle(items);
+      index = 0; score = 0;
+      show(index);
+    }
+
+    // keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === 'n') next();
+      if (e.key.toLowerCase() === 'r') restart();
+      if (e.key.toLowerCase() === 'h') { // hide/show clue
+        if (clue.style.visibility !== 'hidden') clue.style.visibility = 'hidden';
+        else clue.style.visibility = 'visible';
+      }
+      if (e.key.toLowerCase() === 's') { // +1 score quick key
+        score++; scoreEl.textContent = `Score: ${score}`;
+      }
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', next);
+    document.getElementById('revealBtn').addEventListener('click', reveal);
+    document.getElementById('shuffleBtn').addEventListener('click', restart);
+
+    // init
+    restart();
+  </script>
+</body>
+</html>
