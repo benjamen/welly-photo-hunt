@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wellington Evil‑Mode Photo Hunt — Online Images + Timer</title>
+  <title>Wellington Evil-Mode Photo Hunt — No Clues + Timer</title>
   <style>
     html, body { height: 100%; }
     body { margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans";
@@ -29,7 +28,6 @@
     .hud { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:16px 20px; border-top:1px solid #182330; background:#0b0f14; flex-wrap:wrap; }
     .pill { padding:6px 10px; border-radius:999px; background:#14202c; border:1px solid #223142; font-size:14px; opacity:.85; }
     .pill.timer { background:#211b31; border-color:#3b2f63; }
-    .clue { font-size: clamp(14px,1.7vw,18px); }
     .answer { padding:14px 18px; margin:0 20px 18px; border-radius:14px; background:#0e1722; border:1px dashed #29415c; display:none; line-height:1.45; font-size:15px; }
     footer { opacity:.7; font-size:12px; padding:14px 20px; text-align:center; border-top:1px solid #182330; }
     .timeup { color:#ffb4a2; font-weight:700; margin-left:8px; display:none; }
@@ -38,7 +36,7 @@
 <body>
   <div class="wrap">
     <header>
-      <div class="title">🧩 Wellington Evil‑Mode Photo Hunt — Online Images + Timer</div>
+      <div class="title">🧩 Wellington Evil-Mode Photo Hunt — No Clues + Timer</div>
       <div class="controls">
         <button class="btn" id="revealBtn" title="Reveal the answer">Reveal</button>
         <button class="btn" id="nextBtn" title="Next image">Next</button>
@@ -53,9 +51,10 @@
           <div class="mask"></div>
         </div>
         <div class="hud">
-          <div class="clue" id="clue">—</div>
           <div>
             <span class="pill timer" id="timer">30s</span><span class="timeup" id="timeup">Time’s up!</span>
+          </div>
+          <div>
             <span class="pill" id="progress">0 / 0</span>
             <span class="pill" id="score">Score: 0</span>
           </div>
@@ -67,20 +66,104 @@
         <details>
           <summary>How to play</summary>
           <ul>
-            <li>Guess the location from the crop + clue.</li>
-            <li><b>Reveal</b> shows the answer and a link to the <i>full image</i>.</li>
+            <li>Guess the location from the cropped image (<b>no clues</b>).</li>
+            <li><b>Reveal</b> shows the answer + link to the <i>full image</i> (and resets the timer).</li>
             <li><b>Next</b> moves on. <b>Restart</b> shuffles the order.</li>
-            <li>Timer: 30s per image. It <b>resets</b> when you hit <b>Reveal</b>, and on Next/Restart.</li>
-            <li>Press <kbd>H</kbd> to hide clues. Press <kbd>S</kbd> to +1 score.</li>
+            <li>Timer: 30s per image. Press <kbd>S</kbd> to +1 score.</li>
           </ul>
         </details>
       </section>
     </main>
-    <footer>All images hot‑linked from Wikimedia Commons under their stated licenses.</footer>
+    <footer>Images are hot-linked from Wikimedia Commons under their stated licenses.</footer>
   </div>
 
   <script>
-    const items = [{"id": "beehive-roof", "clue": "Copper crown above the chamber where voices carry.", "answer": "The Beehive — roof detail", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/The_Beehive%2C_Wellington%2C_2018.jpg", "focusX": 58, "focusY": 12, "zoom": 600}, {"id": "bucket-fountain", "clue": "Built in 1969; notorious for splash damage.", "answer": "Bucket Fountain — Cuba Street", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/The_Bucket_Fountain%2C_Wellington.jpg", "focusX": 48, "focusY": 44, "zoom": 560}, {"id": "cable-car-track", "clue": "Funicular since 1902; look for the mid‑route fly‑over.", "answer": "Wellington Cable Car — route and overbridge", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Wellington_Cable_Car_and_motorway.jpg", "focusX": 60, "focusY": 52, "zoom": 480}, {"id": "rainbow-crossing", "clue": "Painted pride where mall meets Dixon.", "answer": "Cuba Street Rainbow Crossing", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Rainbow_road_crossing.jpg", "focusX": 50, "focusY": 70, "zoom": 260}, {"id": "te-papa-exterior", "clue": "National stories behind patterned concrete.", "answer": "Te Papa Tongarewa — exterior", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Exterior_of_Te_Papa%2C_2016-01-25.jpg", "focusX": 28, "focusY": 18, "zoom": 520}, {"id": "mfc", "clue": "Concerts beneath timber curves and civic reflections.", "answer": "Michael Fowler Centre", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Michael_Fowler_Centre.jpg", "focusX": 62, "focusY": 22, "zoom": 480}, {"id": "railway-station-clock", "clue": "Where commuters watch the minutes.", "answer": "Wellington Railway Station — clock & facade", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Wellington_Railway_Station_%2814071819439%29.jpg", "focusX": 51, "focusY": 20, "zoom": 300}, {"id": "city-to-sea", "clue": "Carved forms guiding feet from civic to lagoon.", "answer": "City to Sea Bridge — Para Matchitt sculptures", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/City_to_Sea_MRD_03.jpg", "focusX": 55, "focusY": 40, "zoom": 300}, {"id": "mt-victoria-lookout", "clue": "Harbour views and windswept signage nearby.", "answer": "Mount Victoria Lookout — summit area", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Mt_Victoria_Lookout.jpg", "focusX": 55, "focusY": 35, "zoom": 260}, {"id": "carter-fountain", "clue": "Jet that listens to the Nor’Wester.", "answer": "Carter Fountain — Oriental Bay", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Carter_Fountain_in_Oriental_Bay.jpg", "focusX": 50, "focusY": 70, "zoom": 500}, {"id": "parliament-library", "clue": "Victorian Gothic beside the chamber.", "answer": "Parliamentary Library — rose/gothic windows", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Parliamentary_library%2C_Wellington.jpg", "focusX": 35, "focusY": 30, "zoom": 300}, {"id": "supreme-court", "clue": "Inside, timber facets echo a kauri cone.", "answer": "Supreme Court of New Zealand — building", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Supreme_court_july.JPG", "focusX": 60, "focusY": 40, "zoom": 260}, {"id": "cable-car-tunnel", "clue": "Pulses of light guide you uphill.", "answer": "Wellington Cable Car — tunnel approach", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Wellington_Cable_Car_Lambton_Quay_Terminal_June_2012.JPG", "focusX": 52, "focusY": 55, "zoom": 280}, {"id": "airport-gollum", "clue": "A hungry creature reaches for fish above departures.", "answer": "Wellington Airport — giant Gollum sculpture", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Giant_Gollum_sculpture_in_Wellington_Airport.jpg", "focusX": 60, "focusY": 32, "zoom": 620}, {"id": "st-gerards", "clue": "A clifftop landmark watching the harbour.", "answer": "St Gerard’s Church and Monastery", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/St_Gerard%27s_Monastery%2C_Wellington%2C_2010.jpg", "focusX": 60, "focusY": 30, "zoom": 260}, {"id": "well_ngton", "clue": "Be the missing letter on the wharf.", "answer": "WELL_NGTON sign — Wellington waterfront", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Well_ngton_sculpture_2.jpg", "focusX": 62, "focusY": 52, "zoom": 600}, {"id": "roxy", "clue": "Art‑deco glow in Miramar nights.", "answer": "Roxy Cinema — Miramar", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Roxy%2C_Miramar%2C_Wellington_%288489576892%29.jpg", "focusX": 42, "focusY": 28, "zoom": 520}, {"id": "matu-somes", "clue": "Inner‑harbour light, first lit in 1866.", "answer": "Matiu / Somes Island — lighthouse", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Somes_Island_Lighthouse.jpg", "focusX": 70, "focusY": 50, "zoom": 280}, {"id": "botanic-sundial", "clue": "Time told by shadow among the roses.", "answer": "Wellington Botanic Garden — sundial", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Sundial_-_Wellington_Botanic_Garden_-_Wellington%2C_NZ_-_DSC09428.jpg", "focusX": 55, "focusY": 70, "zoom": 300}, {"id": "zealandia-valve-tower", "clue": "Gothic spire above a predator‑proof valley lake.", "answer": "Zealandia — lower reservoir valve tower", "url": "https://commons.wikimedia.org/wiki/Special:FilePath/Lower_reservoir_valve_tower%2C_Zealandia.jpg", "focusX": 65, "focusY": 40, "zoom": 300}];
+    // Helper for Wikimedia Commons hotlinks
+    const WIKI = (name) => "https://commons.wikimedia.org/wiki/Special:FilePath/" + encodeURIComponent(name);
+
+    // DATA — clues removed; kept as comments for your reference only where useful.
+    const items = [
+      // 1 Beehive roof — adjusted to clearly show a roof segment (not sky)
+      { id:"beehive-roof", answer:"The Beehive — roof detail",
+        url: WIKI("The_Beehive,_Wellington,_2018.jpg"), focusX:54, focusY:22, zoom:560 },
+
+      // 2 Bucket Fountain — only half a bucket
+      { id:"bucket-fountain", answer:"Bucket Fountain — Cuba Street",
+        url: WIKI("The_Bucket_Fountain,_Wellington.jpg"), focusX:48, focusY:44, zoom:560 },
+
+      // 3 Cable Car — zoom on one rail (mid-route fly-over context)
+      { id:"cable-car-track", answer:"Wellington Cable Car — track detail",
+        url: WIKI("Wellington_Cable_Car_and_motorway.jpg"), focusX:60, focusY:52, zoom:480 },
+
+      // 4 Cuba St rainbow crossing (kept tricky)
+      { id:"rainbow-crossing", answer:"Cuba Street Rainbow Crossing",
+        url: WIKI("Rainbow_road_crossing.jpg"), focusX:50, focusY:70, zoom:260 },
+
+      // 5 Te Papa exterior — top roof panel only
+      { id:"te-papa-exterior", answer:"Te Papa Tongarewa — exterior panel",
+        url: WIKI("Exterior_of_Te_Papa,_2016-01-25.jpg"), focusX:28, focusY:18, zoom:520 },
+
+      // 6 Michael Fowler Centre — one timber panel
+      { id:"mfc", answer:"Michael Fowler Centre",
+        url: WIKI("Michael_Fowler_Centre.jpg"), focusX:62, focusY:22, zoom:480 },
+
+      // 7 Wellington Railway Station clock (already abstract enough)
+      { id:"railway-station-clock", answer:"Wellington Railway Station — clock & facade",
+        url: WIKI("Wellington_Railway_Station_(14071819439).jpg"), focusX:51, focusY:20, zoom:300 },
+
+      // 8 City to Sea Bridge (Para Matchitt sculptures)
+      { id:"city-to-sea", answer:"City to Sea Bridge — Para Matchitt sculptures",
+        url: WIKI("City_to_Sea_MRD_03.jpg"), focusX:55, focusY:40, zoom:300 },
+
+      // 9 Mount Victoria Lookout — summit area (kept)
+      { id:"mt-victoria-lookout", answer:"Mount Victoria Lookout — summit area",
+        url: WIKI("Mt_Victoria_Lookout.jpg"), focusX:55, focusY:35, zoom:260 },
+
+      // 10 Carter Fountain — base zoom
+      { id:"carter-fountain", answer:"Carter Fountain — Oriental Bay",
+        url: WIKI("Carter_Fountain_in_Oriental_Bay.jpg"), focusX:50, focusY:70, zoom:500 },
+
+      // 11 Parliamentary Library — Gothic window detail
+      { id:"parliament-library", answer:"Parliamentary Library — rose/gothic windows",
+        url: WIKI("Parliamentary_library,_Wellington.jpg"), focusX:35, focusY:30, zoom:300 },
+
+      // 12 Supreme Court — exterior (cone referenced but exteriors are what CC has)
+      { id:"supreme-court", answer:"Supreme Court of New Zealand — building",
+        url: WIKI("Supreme_court_july.JPG"), focusX:60, focusY:40, zoom:260 },
+
+      // 13 Cable Car tunnel approach
+      { id:"cable-car-tunnel", answer:"Wellington Cable Car — tunnel approach",
+        url: WIKI("Wellington_Cable_Car_Lambton_Quay_Terminal_June_2012.JPG"), focusX:52, focusY:55, zoom:280 },
+
+      // 14 Airport — Gollum’s eye only
+      { id:"airport-gollum", answer:"Wellington Airport — giant Gollum sculpture",
+        url: WIKI("Giant_Gollum_sculpture_in_Wellington_Airport.jpg"), focusX:60, focusY:32, zoom:620 },
+
+      // 15 St Gerard’s
+      { id:"st-gerards", answer:"St Gerard’s Church and Monastery",
+        url: WIKI("St_Gerard's_Monastery,_Wellington,_2010.jpg"), focusX:60, focusY:30, zoom:260 },
+
+      // 16 WELL_NGTON waterfront — show only a single letter (extreme zoom)
+      { id:"well_ngton", answer:"WELL_NGTON sign — Wellington waterfront",
+        url: WIKI("Well_ngton_sculpture_2.jpg"), focusX:64, focusY:52, zoom:800 },
+
+      // 17 Roxy Cinema — zoom up into the light (no letters)
+      { id:"roxy", answer:"Roxy Cinema — Miramar",
+        url: WIKI("Roxy,_Miramar,_Wellington_(8489576892).jpg"), focusX:41, focusY:26, zoom:650 },
+
+      // 18 Matiu / Somes lighthouse
+      { id:"matu-somes", answer:"Matiu / Somes Island — lighthouse",
+        url: WIKI("Somes_Island_Lighthouse.jpg"), focusX:70, focusY:50, zoom:280 },
+
+      // 19 Botanic Garden sundial
+      { id:"botanic-sundial", answer:"Wellington Botanic Garden — sundial",
+        url: WIKI("Sundial_-_Wellington_Botanic_Garden_-_Wellington,_NZ_-_DSC09428.jpg"), focusX:55, focusY:70, zoom:300 },
+
+      // 20 Zealandia valve tower
+      { id:"zealandia-valve-tower", answer:"Zealandia — lower reservoir valve tower",
+        url: WIKI("Lower_reservoir_valve_tower,_Zealandia.jpg"), focusX:65, focusY:40, zoom:300 }
+    ];
+
     const DEFAULT_SECONDS = 30;
     let deck = [];
     let index = 0;
@@ -89,7 +172,6 @@
     let seconds = DEFAULT_SECONDS;
 
     const crop = document.getElementById('crop');
-    const clue = document.getElementById('clue');
     const ans = document.getElementById('answer');
     const progress = document.getElementById('progress');
     const scoreEl = document.getElementById('score');
@@ -129,7 +211,6 @@
     function show(i) {
       const it = deck[i];
       setCrop(it);
-      clue.textContent = it.clue;
       ans.style.display = 'none';
       ans.innerHTML = "";
       progress.textContent = `${i+1} / ${deck.length}`;
@@ -141,7 +222,7 @@
       if (index < deck.length - 1) {
         index++; show(index);
       } else {
-        clue.textContent = "Done! Hit Restart to shuffle again.";
+        // finished
         stopAndResetTimer();
       }
     }
@@ -150,8 +231,7 @@
       const it = deck[index];
       ans.style.display = ans.style.display === 'none' ? 'block' : 'none';
       ans.innerHTML = `<b>Answer:</b> ${it.answer}<br><a href="${it.url}" target="_blank" rel="noopener">Open the full image</a>`;
-      // Reset the timer immediately on reveal as requested
-      stopAndResetTimer();
+      stopAndResetTimer(); // reset timer on reveal
     }
 
     function restart() {
@@ -163,7 +243,6 @@
       const k = e.key.toLowerCase();
       if (k === 'n') next();
       if (k === 'r') restart();
-      if (k === 'h') clue.style.visibility = clue.style.visibility !== 'hidden' ? 'hidden' : 'visible';
       if (k === 's') { score++; scoreEl.textContent = `Score: ${score}`; }
     });
     document.getElementById('nextBtn').addEventListener('click', next);
